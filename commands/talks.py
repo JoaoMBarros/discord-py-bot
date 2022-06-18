@@ -1,3 +1,4 @@
+import random
 import requests
 from translate import Translator
 from discord.ext import commands

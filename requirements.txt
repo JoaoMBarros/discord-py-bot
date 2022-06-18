@@ -4,3 +4,4 @@ python-decouple
 datetime
 asyncio
 Translator
+unidecode
