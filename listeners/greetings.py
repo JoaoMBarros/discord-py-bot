@@ -16,10 +16,8 @@ class Listeners(commands.Cog):
         
         current = time()
         author = message.author.name
-        m = message.content
-        m = str(m).casefold()
 
-        match m:
+        match str(message.content).casefold():
             case 'bom dia':
                 if(current == 'manha'):
                     await message.channel.send('muito bom dia, ' + author)

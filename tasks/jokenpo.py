@@ -39,8 +39,9 @@ class Jokenpo(commands.Cog):
         
         first_input = await self.bot.wait_for('message', check=check)
         try:
+            #Ugly ass method. Try new one
             if(first_input.author.id == first_member):
-                second_input = await self.bot.wait_for('message', timeout=2, check=check_player_two)
+                second_input = await self.bot.wait_for('message', timeout=2.0, check=check_player_two)
             elif(first_input.author.id == second_member):
                 second_input = await self.bot.wait_for('message', timeout=2.0, check=check_player_one)
         except asyncio.TimeoutError:
