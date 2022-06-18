@@ -12,10 +12,6 @@ class Jokenpo(commands.Cog):
         members.append(ctx.author) #If the member who called the commands doesnt ping themself, it includes them
         first_member = members[0].id #Get the users ids
         second_member = members[1].id
-        await ctx.send('Jogo começando entre <@' + str(first_member) + '> e <@' + str(second_member) + '>')
-        await asyncio.sleep(1)
-        await ctx.send('Pedra, papel ou tesoura?')
-        await asyncio.sleep(1)
         
         #Check if the next message sent is from one of the users mentioned in the command
         def check(msg):
@@ -32,9 +28,12 @@ class Jokenpo(commands.Cog):
         def check_player_two(msg):
             if msg.author.bot:
                 return
-            return msg.author.id == second_member 
-
-        await ctx.send('Em')
+            return msg.author.id == second_member
+        
+        await ctx.send('Jogo começando entre <@' + str(first_member) + '> e <@' + str(second_member) + '>')
+        await asyncio.sleep(1)
+        await ctx.send('Pedra, papel ou tesoura?')
+        await asyncio.sleep(1)
         for i in range(3, 0, -1):
             await asyncio.sleep(1)
             await ctx.send(i)

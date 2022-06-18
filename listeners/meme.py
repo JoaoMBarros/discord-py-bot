@@ -16,12 +16,15 @@ class Meme(commands.Cog):
 
         if 'gremio' in str(unidecode(message.content)).casefold():
             await message.channel.send('<:anime:749023956987805709>')
-        
+            
         elif 'flamengo' in str(message.content).casefold():
             await message.channel.send('silencio, deixem o mestre dorival trabalhar')
-        
+            
         elif 'maconha' in str(message.content).casefold():
             await message.channel.send(response)
+            
+        elif 'hg' in str(message.content).casefold():
+            await message.channel.send('Hg só quando o Grêmio ganhar')
 
 def setup(bot):
     bot.add_cog(Meme(bot))
