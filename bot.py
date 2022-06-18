@@ -1,3 +1,8 @@
+# Adicionar o default no jokenpo
+# Melhorar os ifs encadeados no jokenpo
+# Colocar na partida de jokenpo só quem foi pingado
+# Arrumar o timing do jokenpo (contagem muito rapida) 
+
 import os
 from decouple import config
 from discord.ext import commands

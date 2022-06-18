@@ -32,29 +32,30 @@ class Jokenpo(commands.Cog):
         await ctx.send(get_output_jokenpo(first_user, second_user))
 
 def get_output_jokenpo(first_user, second_user):
+    winner = ''
     match first_user.content:
         case 'pedra':
             if (second_user.content == 'papel'):
                 winner = second_user.author.name
             elif(second_user.content == 'tesoura'):
-                winner =  first_user.author.name
+                winner = first_user.author.name
             elif(second_user.content == 'pedra'):
-                winner =  'Ninguém'
+                winner = 'Ninguém'
         case 'papel':
             if (second_user.content == 'papel'):
-                winner =  second_user.author.name
-            elif(second_user.content == 'tesoura'):
-                winner =  first_user.author.name
+                winner = 'Ninguém'
             elif(second_user.content == 'pedra'):
-                winner =  'Ninguém'
+                winner = first_user.author.name
+            elif(second_user.content == 'tesoura'):
+                winner = second_user.author.name
         case 'tesoura':
             if (second_user.content == 'papel'):
-                winner =  second_user.author.name
+                winner = first_user.author.name
             elif(second_user.content == 'tesoura'):
-                winner =  first_user.author.name
+                winner = 'Ninguém'
             elif(second_user.content == 'pedra'):
-                winner =  'Ninguém'
-                
+                winner = second_user.author.name
+
     return winner + ' ganhou'    
 
 def setup(bot):
