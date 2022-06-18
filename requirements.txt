@@ -3,5 +3,5 @@ requests
 python-decouple
 datetime
 asyncio
-Translator
+translate
 unidecode
