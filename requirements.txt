@@ -3,5 +3,4 @@ requests
 python-decouple
 datetime
 asyncio
-random
 Translator
