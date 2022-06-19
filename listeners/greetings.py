@@ -27,7 +27,7 @@ class Listeners(commands.Cog):
                 if(current == 'tarde'):
                     await message.channel.send('muito boa tarde, ' + author)
                 else:
-                    await message.channel.send('isso é hora de boa tarde?')
+                    await message.channel.send('acha que pai de familia ta dando boa tarde essas horas?')
             case 'boa noite':
                 if(current == 'noite'):
                     await message.channel.send('muito boa noite, ' + author)
@@ -36,10 +36,10 @@ class Listeners(commands.Cog):
 
 def time():
     current = datetime.now()
-    if(current.hour > 4 and current.hour <= 12):
+    if(current.hour > 4 and current.hour < 13):
         return 'manha'
-    elif(current.hour >= 13 and current.hour <= 18):
-        return ('tarde')
+    elif(current.hour > 12 and current.hour < 19):
+        return 'tarde'
     return 'noite'
 
 def setup(bot):
