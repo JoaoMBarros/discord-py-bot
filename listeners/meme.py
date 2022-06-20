@@ -10,10 +10,7 @@ class Meme(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-        
-        roulette = ['oi', 'opa', 'quero', '<@383320582336413706>']
-        response = random.choice(roulette)
-
+    
         if 'gremio' in str(unidecode(message.content)).casefold():
             await message.channel.send('<:anime:749023956987805709>')
             
@@ -21,7 +18,13 @@ class Meme(commands.Cog):
             await message.channel.send('silencio, deixem o mestre dorival trabalhar')
             
         elif 'maconha' in str(message.content).casefold():
-            await message.channel.send(response)
+            target = 177013
+            number = random.randint(0, 500000)
+            if number == target:
+                await message.channel.send('<@383320582336413706>')
+            else:
+                roulette = ['oi', 'opa', 'quero', 'cade', 'onde']
+                await message.channel.send(random.choice(roulette))
             
         elif 'hg' in str(message.content).casefold():
             await message.channel.send('Hg só quando o Grêmio ganhar')
