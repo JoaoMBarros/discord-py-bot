@@ -1,3 +1,4 @@
+import pytz
 from discord.ext import commands
 from datetime import datetime
 
@@ -35,7 +36,7 @@ class Listeners(commands.Cog):
                     await message.channel.send('isso é hora de boa noite?')
 
 def time():
-    current = datetime.now()
+    current = datetime.now(pytz.timezone('America/Sao_Paulo'))
     if(current.hour > 4 and current.hour < 13):
         return 'manha'
     elif(current.hour > 12 and current.hour < 19):
