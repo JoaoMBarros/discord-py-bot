@@ -7,10 +7,11 @@ class Meme(commands.Cog):
         self.bot = bot
                     
     @commands.Cog.listener()
+    @commands.is_owner()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
-    
+
         if 'gremio' in str(unidecode(message.content)).casefold():
             await message.channel.send('<:anime:749023956987805709>')
             
@@ -21,9 +22,11 @@ class Meme(commands.Cog):
             target = 177013
             number = random.randint(0, 500000)
             if number == target:
-                await message.channel.send('<@383320582336413706>')
+                winner_string = 'PAROU! ALGUÉM CONSEGUIU! VENCEDOR(A): <@' + str(message.author.id) + '>'
+                await message.channel.send('<@383320582336413706>\n' + winner_string)
+                await self.bot.close()
             else:
-                roulette = ['oi', 'opa', 'quero', 'cade', 'onde']
+                roulette = ['🤤', '😋', 'oi', 'opa', 'quero', 'cade', 'onde', 'maconha?']
                 await message.channel.send(random.choice(roulette))
             
         elif 'hg' in str(message.content).casefold():
