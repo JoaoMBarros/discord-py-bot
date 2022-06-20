@@ -7,6 +7,29 @@ class Talks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name='repita')
+    async def send_message_again(self, ctx):
+        string_list = str(ctx.message.content).split(' ')
+        string_list.pop(0)
+        string_list.pop(0)
+        response = ' '.join(string_list)
+        await ctx.message.delete()
+        await ctx.send(response)
+
+    @commands.command(name='qual')
+    async def send_message_choose(self, ctx):
+        options = str(ctx.message.content).split(' ')
+        options.pop(0)
+        options.pop(0)
+        response = 'Na minha opinião, ' + random.choice(options)
+        await ctx.send(response)
+
+    @commands.command(name='diga')
+    async def send_message_yes_or_no(self, ctx):
+        answers = ['Sim', 'Não', 'De forma alguma', 'Não sei', 'Com toda certeza']
+        response = random.choice(answers)
+        await ctx.send(response)
+
     @commands.command(name='sabio')
     async def send_message_sabio(self, ctx):
         translator = Translator(to_lang='pt')
