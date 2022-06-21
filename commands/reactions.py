@@ -12,28 +12,42 @@ class Reactions(commands.Cog):
         string_list = str(ctx.message.content).split(' ')
         string_list.pop(0)
         string_list.pop(0)
+        time = int(string_list.pop(0))
         poll_quantity = len(string_list)
         winners = []
         poll_emotes_count = []
-        list_emotes = ['😚', '😊', '🧐', '😘', '😌', '🤓', '😗', '🤪', '😎']
         choosen_emotes = []
-        await ctx.send('Escolham entre:\n')
         msg = ''
-
-        for i in range(0, poll_quantity, 1):
-            choosen_emotes.append(random.choice(list_emotes))
-            list_emotes.remove(choosen_emotes[i])
-            msg += choosen_emotes[i] + ' ' + string_list[i] + '\n'
         
+        #teste = str(string_list).split('-')
+        #await ctx.send('teste = ' + str(teste))
+        #await ctx.send('string_list: ' + str(string_list))
+
+        await ctx.send('Escolham entre:\n')
+        #Grabbing the emotes sent with the command
+        for item in string_list:
+            emote = str(item).split('-')
+            choosen_emotes.append(emote[0])
+        
+        #Building the message that will be displayed for the poll
+        for i in range(0, poll_quantity, 1):
+            msg += string_list[i] + '\n'
+        
+        #Sending the message and adding the reactions to it
         msg = await ctx.send(msg)
         for i in range(0, poll_quantity, 1):
             await msg.add_reaction(choosen_emotes[i])
         
-        await asyncio.sleep(30)
+        #time = await self.bot.wait_for('message')
+        #await ctx.send('Tempo ' + str(time))
+        await asyncio.sleep(time)
         msg = await msg.channel.fetch_message(msg.id)
+
+        #Getting the quantity of each reactiion
         for reaction in msg.reactions:
             poll_emotes_count.append(reaction.count)
 
+        #Getting the winner(s)
         aux = -1
         for i in poll_emotes_count:
             aux += 1
