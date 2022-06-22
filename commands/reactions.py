@@ -12,6 +12,8 @@ class Reactions(commands.Cog):
         string_list = str(ctx.message.content)[17:]
         string_list = string_list.split('^')
 
+        await ctx.message.delete()
+
         #Getting the timer
         time = int(string_list.pop(0))
 
