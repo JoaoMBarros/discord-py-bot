@@ -8,6 +8,7 @@ def load_cogs(bot):
     bot.load_extension('listeners.greetings')
     bot.load_extension('listeners.meme')
     bot.load_extension('tasks.jokenpo')
+    bot.load_extension('tasks.hangman')
 
     for file in os.listdir("commands/"):
         if file.endswith(".py"):

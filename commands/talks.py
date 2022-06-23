@@ -18,10 +18,9 @@ class Talks(commands.Cog):
 
     @commands.command(name='qual')
     async def send_message_choose(self, ctx):
-        options = str(ctx.message.content).split(' ')
-        options.pop(0)
-        options.pop(0)
-        response = 'Na minha opinião, ' + random.choice(options)
+        options = str(ctx.message.content)[14:]
+        options = options.split(' ou ')
+        response = 'Na minha opinião, ' + random.choice(options) + '.'
         await ctx.send(response)
 
     @commands.command(name='diga')
