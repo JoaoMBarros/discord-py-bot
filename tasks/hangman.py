@@ -1,5 +1,5 @@
 #Gotta rewrite this code...
-
+#Gotta redo the logic, game changed
 import random
 import asyncio
 from discord.ext import commands
@@ -8,6 +8,10 @@ class Hangman(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+
+
     @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(name='hangman')
     async def hangman_game(self, ctx):
@@ -33,10 +37,21 @@ class Hangman(commands.Cog):
             guessing_gaps.append('_')
             if i < len(word_to_be_guessed)-1:
                 guessing_gaps.append(' ')
+        a = 0
+        while(a < len(characters_to_be_guessed)):
+            msg = await msg.wait_for('message')
+            if msg.content in characters_to_be_guessed
 
+
+
+
+
+
+
+        """
         def check_turn(msg):
             return msg.author.id == player.id
-
+        
         a = 0
         word_guessed = False
         while (a < len(word_to_be_guessed)) and not word_guessed:
@@ -119,6 +134,7 @@ class Hangman(commands.Cog):
         await ctx.send('A palavra era: ' + word_to_be_guessed)
         await asyncio.sleep(1)
         await ctx.send('Quem venceu a rodada: ' + last_player.mention)
+        """
 
 def setup(bot):
     bot.add_cog(Hangman(bot))
