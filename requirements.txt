@@ -6,4 +6,4 @@ asyncio
 translate
 unidecode
 pytz
-scheduler
+apscheduler
