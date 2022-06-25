@@ -10,7 +10,7 @@ class Hangman(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, msg):
-
+        pass
 
     @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(name='hangman')
@@ -40,7 +40,7 @@ class Hangman(commands.Cog):
         a = 0
         while(a < len(characters_to_be_guessed)):
             msg = await msg.wait_for('message')
-            if msg.content in characters_to_be_guessed
+            #if msg.content in characters_to_be_guessed
 
 
 
@@ -134,7 +134,7 @@ class Hangman(commands.Cog):
         await ctx.send('A palavra era: ' + word_to_be_guessed)
         await asyncio.sleep(1)
         await ctx.send('Quem venceu a rodada: ' + last_player.mention)
-        """
+"""
 
 def setup(bot):
     bot.add_cog(Hangman(bot))

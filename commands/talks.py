@@ -48,11 +48,6 @@ class Talks(commands.Cog):
     async def send_message_roteiro(self, ctx):
         response = 'O roteiro está ' + str(random.randint(0, 99)) + '% pronto'
         await ctx.send(response)
-    
-    @commands.command(name='bolso')
-    async def send_message_roteiro(self, ctx):
-        response = 'teste'
-        await ctx.send(response)
 
     @commands.command(name='cap')
     async def send_message_cap(self, ctx):

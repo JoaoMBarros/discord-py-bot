@@ -7,7 +7,6 @@ class Meme(commands.Cog):
         self.bot = bot
                     
     @commands.Cog.listener()
-    @commands.is_owner()
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
@@ -25,6 +24,9 @@ class Meme(commands.Cog):
                 winner_string = 'PAROU! ALGUÉM CONSEGUIU! VENCEDOR(A): <@' + str(message.author.id) + '>'
                 await message.channel.send('<@383320582336413706>\n' + winner_string)
                 await self.bot.close()
+            elif number < 177024 and number > 177002:
+                await message.channel.send('Caralho,' + str(message.author.id) + ' passou muito perto kkkkkkkk. Teu número foi: ' + number)
+                await message.channel.send('https://cdn.discordapp.com/attachments/725529603350855690/990102214901121114/videoplayback.mp4')
             else:
                 roulette = ['🤤', '😋', 'oi', 'opa', 'quero', 'cade', 'onde', 'maconha?']
                 await message.channel.send(random.choice(roulette))

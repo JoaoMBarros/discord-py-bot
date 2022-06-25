@@ -1,8 +1,22 @@
 from discord.ext import commands
+import random
 
 class Members(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(name='bolso')
+    async def send_message_roteiro(self, ctx):
+        response = ['termina o video', 'abre o app', 'faz o video', 'faz flexão militar', 
+                    'cria o servidor', 'abre o jogo', 'vai bed', 'faz o qc', 'faz o evento', 
+                    'faz o gartic', 'faz o hg', 'faz o cap', 'faz o drink', 'manda o audio', 
+                    'ganha o mundial', 'entra no autocar', 'diminui o dolar', 'assiste bojack', 
+                    'assiste baby steps', 'assiste ousama game', 'assiste ousama ranking', 
+                    'assiste euphoria', 'faz o roteiro', 'abre o mine', 'joga hollow knight', 
+                    'le classroom', 'assiste link click', 'paga academia', 'cade a namorada', 
+                    'loga no fortnite', 'acha o jogo', 'le ohayou ibarahime', 'assiste rwby']
+
+        await ctx.send(random.choice(response))
 
     @commands.command(name='lucy')
     async def send_message_lucy(self, ctx):
