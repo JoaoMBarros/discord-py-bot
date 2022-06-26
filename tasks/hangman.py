@@ -1,3 +1,7 @@
+# Mudar o sistema de react
+# Arrumar o bot pra só quem iniciou o comando conseguir usar os comandos de controle
+# Bot reagir a uma mensagem quando ela se aproximar da resposta correta
+
 import asyncio
 from unidecode import unidecode
 from discord.ext import commands
@@ -10,7 +14,7 @@ class Hangman(commands.Cog):
     @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(name='advpalavra')
     async def hangman_game(self, ctx):
-        channel = self.bot.get_channel(716000401618370660)
+        channel = self.bot.get_channel(716290570833887262)
         await ctx.send('Alimente o bot')
 
         def check_channel(m):
@@ -93,7 +97,7 @@ class Hangman(commands.Cog):
                 return str(unidecode(m.content)).casefold() == str(unidecode(words_to_be_guessed[0])).casefold() and m.author.id in [x.id for x in users]
 
             async def check_40_seconds():
-                channel = self.bot.get_channel(716000401618370660)
+                channel = self.bot.get_channel(716290570833887262)
                 try:
                     msg = await self.bot.wait_for('message', check=check, timeout=20)
                     return msg
@@ -105,7 +109,7 @@ class Hangman(commands.Cog):
                     return False
 
             async def check_20_seconds():
-                channel = self.bot.get_channel(716000401618370660)
+                channel = self.bot.get_channel(716290570833887262)
                 try:
                     msg = await self.bot.wait_for('message', check=check, timeout=20)
                     return msg
