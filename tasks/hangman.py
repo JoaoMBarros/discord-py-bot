@@ -50,10 +50,10 @@ class Hangman(commands.Cog):
         
         embed = discord.Embed(title='**Jogo começando!**', color=0x89CFF0)
         embed.add_field(name='\u200b', value='🔥 Reaja para participar')
-
+        await asyncio.sleep(30)
         msg = await channel.send(embed=embed)
         await msg.add_reaction('🔥')
-        await asyncio.sleep(30)
+        
         msg = await channel.fetch_message(msg.id)
 
         for reaction in msg.reactions:
