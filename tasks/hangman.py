@@ -50,14 +50,13 @@ class Hangman(commands.Cog):
             await channel.send('Jogo parado')
             return
         
-        embed = discord.Embed(title='**Jogo começando!**', color=0x89CFF0)
-        embed.add_field(name='\u200b', value='🔥 Reaja para participar')
+        embed = discord.Embed(title='**Um novo jogo está começando**', color=0x89CFF0)
+        embed.set_author(name='Adivinhe a palavra!')
+        embed.set_footer(text='Novo desafio em 15 segundos!')
         msg = await channel.send(embed=embed)
-        await msg.add_reaction('🔥')
-        await asyncio.sleep(5)
-        msg = await channel.fetch_message(msg.id)
 
         rank = {}
+        rounds = len(words_to_be_guessed)
         game_round = 0
         while words_to_be_guessed:
             game_round += 1
@@ -75,7 +74,7 @@ class Hangman(commands.Cog):
                     embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
                     embed.set_author(name=f'Rodada {game_round}\n')
                     embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
-                    embed.set_footer(text='Faltam 40 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
+                    embed.set_footer(text='Faltam 40 segundos!', icon_url='https://media.giphy.com/media/waHLEK3f9iL2MKRy1t/giphy.gif')
                     await channel.send(embed=embed)
                     return False
 
@@ -88,7 +87,7 @@ class Hangman(commands.Cog):
                     embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
                     embed.set_author(name=f'Rodada {game_round}\n')
                     embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
-                    embed.set_footer(text='Faltam 20 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
+                    embed.set_footer(text='Faltam 20 segundos!', icon_url='https://media.giphy.com/media/waHLEK3f9iL2MKRy1t/giphy.gif')
                     await channel.send(embed=embed)
                     return False
 
@@ -102,11 +101,11 @@ class Hangman(commands.Cog):
                 if i < len(words_to_be_guessed[0])-1:
                     guessing_gaps.append(' ')
 
-            await asyncio.sleep(7)
+            await asyncio.sleep(15)
             embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
             embed.set_author(name=f'Rodada {game_round}\n')
             embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
-            embed.set_footer(text='Faltam 60 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
+            embed.set_footer(text='Faltam 60 segundos!', icon_url='https://media.giphy.com/media/waHLEK3f9iL2MKRy1t/giphy.gif')
             await channel.send(embed=embed)
 
             try:
@@ -123,7 +122,7 @@ class Hangman(commands.Cog):
                 
                 user = await self.bot.fetch_user(msg.author.id)
                 pfp = user.avatar_url_as(size=128)                              
-                embed=discord.Embed(title=f'**{msg.author.name} acertou!**', description=f'Palavra: **{words_to_be_guessed[0]}**', color=0xb9e85a)
+                embed=discord.Embed(title=f'**{msg.author.name} acertou!**', description=f'A palavra era **{words_to_be_guessed[0]}**', color=0xb9e85a)
                 embed.set_image(url=(pfp))
                 await channel.send(embed=embed)
 
@@ -146,8 +145,10 @@ class Hangman(commands.Cog):
                 await channel.send(embed=ranking)
 
             except asyncio.TimeoutError:
-                embed = discord.Embed(title='Acabou o tempo!', description='Ninguém acertou', color=0xff4f4f)
-                embed.add_field(name='\u200b', value='A palavra era: **`' + ''.join(characters_to_be_guessed) + '`**')
+                embed = discord.Embed(title='Ninguém acertou', color=0xff4f4f)
+                embed.add_field(name='\u200b', value=f'A palavra era **{words_to_be_guessed[0]}**')
+                embed.set_author(name='Acabou o tempo!')
+                embed.set_footer(text=f'Rodada {game_round} de {rounds}')
                 await channel.send(embed=embed)
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
