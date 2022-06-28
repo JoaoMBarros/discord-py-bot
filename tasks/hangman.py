@@ -1,7 +1,3 @@
-# Mudar o sistema de react
-# Arrumar o bot pra só quem iniciou o comando conseguir usar os comandos de controle
-# Bot reagir a uma mensagem quando ela se aproximar da resposta correta
-
 import asyncio
 from unidecode import unidecode
 from discord.ext import commands
@@ -14,18 +10,25 @@ class Hangman(commands.Cog):
     @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(name='advpalavra')
     async def hangman_game(self, ctx):
-        channel = self.bot.get_channel(716290570833887262)
+        channel = self.bot.get_channel(716000401618370660)
         await ctx.send('Alimente o bot')
 
-        def check_channel(m):
-            return m.channel == ctx.message.channel
+        def check_channel_and_host(m):
+            if m.content == 'advpalavra parar':
+                return True
+            return m.channel == ctx.message.channel and m.author.id == ctx.message.author.id
         
         def check_start(m):
             if m.content == 'advpalavra parar':
                 return True
             return m.content == 'advpalavra começar'
 
-        food_string = await self.bot.wait_for('message', check=check_channel)
+        food_string = await self.bot.wait_for('message', check=check_channel_and_host)
+
+        if food_string.content == 'advpalavra parar':
+            await ctx.send('Bot finalizado')
+            return
+
         await ctx.send('Bot alimentado')
 
         food_list = str(food_string.content).split('^')
@@ -40,7 +43,6 @@ class Hangman(commands.Cog):
         word_hint_dict = dict(new_food_list)
         words_to_be_guessed = list(word_hint_dict.keys())
         hints = list(word_hint_dict.values())
-        users = []
         
         start = await self.bot.wait_for('message', check=check_start)
 
@@ -50,31 +52,45 @@ class Hangman(commands.Cog):
         
         embed = discord.Embed(title='**Jogo começando!**', color=0x89CFF0)
         embed.add_field(name='\u200b', value='🔥 Reaja para participar')
-        await asyncio.sleep(30)
         msg = await channel.send(embed=embed)
         await msg.add_reaction('🔥')
-        
+        await asyncio.sleep(5)
         msg = await channel.fetch_message(msg.id)
 
-        for reaction in msg.reactions:
-            async for user in reaction.users():
-                if user != self.bot.user:
-                    users.append(user)
-        
         rank = {}
-        for key in users:
-            rank[key.id] = 0
-        
+        game_round = 0
         while words_to_be_guessed:
+            game_round += 1
+            def check(m):
+                if m.content == 'advpalavra parar':
+                    return True
+                return str(unidecode(m.content)).casefold() == str(unidecode(words_to_be_guessed[0])).casefold()
 
-            string_rank = ''
-            rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
-            for player, score in rank.items():
-                string_rank += '**{}**: {}'.format('<@'+str(player)+'>', str(score)+' pontos\n')
-            
-            ranking=discord.Embed(title='**RANKING**', color=0xb9e85a)
-            ranking.add_field(name='\u200b', value=string_rank)
-            await channel.send(embed=ranking)
+            async def check_40_seconds():
+                try:
+                    msg = await self.bot.wait_for('message', check=check, timeout=20)
+                    return msg
+                except asyncio.TimeoutError:
+                    guessing_gaps[0] = characters_to_be_guessed[0]
+                    embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
+                    embed.set_author(name=f'Rodada {game_round}\n')
+                    embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
+                    embed.set_footer(text='Faltam 40 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
+                    await channel.send(embed=embed)
+                    return False
+
+            async def check_20_seconds():
+                try:
+                    msg = await self.bot.wait_for('message', check=check, timeout=20)
+                    return msg
+                except asyncio.TimeoutError:
+                    guessing_gaps[-1] = characters_to_be_guessed[-1]
+                    embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
+                    embed.set_author(name=f'Rodada {game_round}\n')
+                    embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
+                    embed.set_footer(text='Faltam 20 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
+                    await channel.send(embed=embed)
+                    return False
 
             guessing_gaps = []
             characters_to_be_guessed = list(words_to_be_guessed[0])
@@ -86,39 +102,12 @@ class Hangman(commands.Cog):
                 if i < len(words_to_be_guessed[0])-1:
                     guessing_gaps.append(' ')
 
-            await asyncio.sleep(5)
-            embed = discord.Embed(title='**Dica: ' + str(hints[0]) + '**')
-            embed.add_field(name='\u200b', value='Palavra: `' + ''.join(guessing_gaps) + '`')
+            await asyncio.sleep(7)
+            embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
+            embed.set_author(name=f'Rodada {game_round}\n')
+            embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
+            embed.set_footer(text='Faltam 60 segundos!', icon_url='https://media.baamboozle.com/uploads/images/426758/1628200837_69419_gif-url.gif')
             await channel.send(embed=embed)
-
-            def check(m):
-                if m.content == 'advpalavra parar' and m.author.id in users.id:
-                    return True
-                return str(unidecode(m.content)).casefold() == str(unidecode(words_to_be_guessed[0])).casefold() and m.author.id in [x.id for x in users]
-
-            async def check_40_seconds():
-                channel = self.bot.get_channel(716290570833887262)
-                try:
-                    msg = await self.bot.wait_for('message', check=check, timeout=20)
-                    return msg
-                except asyncio.TimeoutError:
-                    guessing_gaps[0] = characters_to_be_guessed[0]
-                    embed = discord.Embed(title='**Dica: ' + str(hints[0]) + '**', description='Faltam 40 segundos!')
-                    embed.add_field(name='\u200b', value='Palavra: `' + ''.join(guessing_gaps) + '`')
-                    await channel.send(embed=embed)
-                    return False
-
-            async def check_20_seconds():
-                channel = self.bot.get_channel(716290570833887262)
-                try:
-                    msg = await self.bot.wait_for('message', check=check, timeout=20)
-                    return msg
-                except asyncio.TimeoutError:
-                    guessing_gaps[-1] = characters_to_be_guessed[-1]
-                    embed = discord.Embed(title='**Dica: ' + str(hints[0]) + '**', description='Faltam 20 segundos!')
-                    embed.add_field(name='\u200b', value='Palavra: `' + ''.join(guessing_gaps) + '`')
-                    await channel.send(embed=embed)
-                    return False
 
             try:
                 msg = await check_40_seconds()
@@ -133,31 +122,39 @@ class Hangman(commands.Cog):
                     break
                 
                 user = await self.bot.fetch_user(msg.author.id)
-                pfp = user.avatar_url_as(size=128)
-        
-                embed=discord.Embed(title='**' + msg.author.name+' acertou!**', description="Palavra: **"+words_to_be_guessed[0] + '**', color=0xb9e85a)
+                pfp = user.avatar_url_as(size=128)                              
+                embed=discord.Embed(title=f'**{msg.author.name} acertou!**', description=f'Palavra: **{words_to_be_guessed[0]}**', color=0xb9e85a)
                 embed.set_image(url=(pfp))
-
                 await channel.send(embed=embed)
 
-                rank[msg.author.id] += 1
+                if msg.author.id not in rank:
+                    rank[msg.author.id] = 1
+                else:
+                    rank[msg.author.id] += 1
+
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
+                string_rank = ''
+                rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
+                aux = 1
+                for player, score in rank.items():
+                    string_rank += f'{str(aux)}º **<@{str(player)}>**: {str(score)} pontos\n'
+                    
+                ranking=discord.Embed(title='**RANKING**', color=0xb9e85a)
+                ranking.add_field(name='\u200b', value=string_rank)
+                await channel.send(embed=ranking)
 
             except asyncio.TimeoutError:
-                
                 embed = discord.Embed(title='Acabou o tempo!', description='Ninguém acertou', color=0xff4f4f)
                 embed.add_field(name='\u200b', value='A palavra era: **`' + ''.join(characters_to_be_guessed) + '`**')
                 await channel.send(embed=embed)
-
-
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
         
         rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
-        await asyncio.sleep(3)
+        await asyncio.sleep(5)
 
         podium = []
         for i in range(0, len(rank.items())):
