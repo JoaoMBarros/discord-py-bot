@@ -136,10 +136,13 @@ class Hangman(commands.Cog):
                 await asyncio.sleep(5)
                 string_rank = ''
                 rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
-                aux = 1
-                for player, score in rank.items():
-                    string_rank += f'{str(aux)}º **<@{str(player)}>**: {str(score)} pontos\n'
-                    
+
+                string_rank += f'🥇 **<@{str(rank.)}>**: {str(score)} pontos\n'
+                string_rank += f'🥈 **<@{str(player)}>**: {str(score)} pontos\n'
+                string_rank += f'🥉 **<@{str(player)}>**: {str(score)} pontos\n'
+            
+                string_rank += f'🔹 **<@{str(player)}>**: {str(score)} pontos\n'
+            
                 ranking=discord.Embed(title='**RANKING**', color=0xb9e85a)
                 ranking.add_field(name='\u200b', value=string_rank)
                 await channel.send(embed=ranking)
