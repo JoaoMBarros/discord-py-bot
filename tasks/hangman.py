@@ -55,7 +55,8 @@ class Hangman(commands.Cog):
         embed.set_footer(text='Novo desafio em 15 segundos!')
         msg = await channel.send(embed=embed)
 
-        rank = {}
+        #rank = {}
+        rank_list = [[]]
         rounds = len(words_to_be_guessed)
         game_round = 0
         while words_to_be_guessed:
@@ -126,15 +127,19 @@ class Hangman(commands.Cog):
                 embed.set_image(url=(pfp))
                 await channel.send(embed=embed)
 
-                if msg.author.id not in rank:
-                    rank[msg.author.id] = 1
+                aux_players = 0
+                if msg.author.id not in rank_list:
+                    aux_players+=1
+                    rank_list[msg.author.id][aux_players] = 1
                 else:
-                    rank[msg.author.id] += 1
+                    #rank_list.insert(1, list([1, 1])) = 
 
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
                 await asyncio.sleep(5)
                 string_rank = ''
+
+                
                 rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
 
                 string_rank += f'🥇 **<@{str(rank.)}>**: {str(score)} pontos\n'
@@ -157,8 +162,8 @@ class Hangman(commands.Cog):
                 hints.pop(0)
                 await asyncio.sleep(5)
         
-        rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
-        await asyncio.sleep(5)
+        #rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
+        #await asyncio.sleep(5)
 
         podium = []
         for i in range(0, len(rank.items())):
