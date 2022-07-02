@@ -55,8 +55,8 @@ class Hangman(commands.Cog):
         embed.set_footer(text='Novo desafio em 15 segundos!')
         msg = await channel.send(embed=embed)
 
-        #rank = {}
-        rank_list = [[]]
+
+        rank_list = []
         rounds = len(words_to_be_guessed)
         game_round = 0
         while words_to_be_guessed:
@@ -102,7 +102,7 @@ class Hangman(commands.Cog):
                 if i < len(words_to_be_guessed[0])-1:
                     guessing_gaps.append(' ')
 
-            await asyncio.sleep(15)
+            await asyncio.sleep(2)
             embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
             embed.set_author(name=f'Rodada {game_round}\n')
             embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
@@ -127,12 +127,16 @@ class Hangman(commands.Cog):
                 embed.set_image(url=(pfp))
                 await channel.send(embed=embed)
 
-                aux_players = 0
+                qnt_players = 0
+                aux_player_score = []
                 if msg.author.id not in rank_list:
-                    aux_players+=1
-                    rank_list[msg.author.id][aux_players] = 1
+                    qnt_players+=1
+                    aux_player_score.append(msg.author.id)
+                    aux_player_score.append(1)
                 else:
-                    #rank_list.insert(1, list([1, 1])) = 
+                    rank[msg.author.id] += 1
+                
+                
 
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
@@ -141,15 +145,20 @@ class Hangman(commands.Cog):
 
                 
                 rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
+                rank_list = list(rank.items())
+                await ctx.send(f'rank dict {rank}')
+                await ctx.send(f'rank list {rank_list}')
 
-                string_rank += f'🥇 **<@{str(rank.)}>**: {str(score)} pontos\n'
+                """
+                string_rank += f'🥇 **<@{str(player)}>**: {str(score)} pontos\n'
                 string_rank += f'🥈 **<@{str(player)}>**: {str(score)} pontos\n'
                 string_rank += f'🥉 **<@{str(player)}>**: {str(score)} pontos\n'
             
                 string_rank += f'🔹 **<@{str(player)}>**: {str(score)} pontos\n'
+                """
             
                 ranking=discord.Embed(title='**RANKING**', color=0xb9e85a)
-                ranking.add_field(name='\u200b', value=string_rank)
+                ranking.add_field(name='\u200b', value='string_rank')
                 await channel.send(embed=ranking)
 
             except asyncio.TimeoutError:
@@ -162,8 +171,8 @@ class Hangman(commands.Cog):
                 hints.pop(0)
                 await asyncio.sleep(5)
         
-        #rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
-        #await asyncio.sleep(5)
+        rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
+        await asyncio.sleep(5)
 
         podium = []
         for i in range(0, len(rank.items())):
