@@ -55,8 +55,8 @@ class Hangman(commands.Cog):
         embed.set_footer(text='Novo desafio em 15 segundos!')
         msg = await channel.send(embed=embed)
 
-
         rank_list = []
+        rank = {}
         rounds = len(words_to_be_guessed)
         game_round = 0
         while words_to_be_guessed:
@@ -102,7 +102,7 @@ class Hangman(commands.Cog):
                 if i < len(words_to_be_guessed[0])-1:
                     guessing_gaps.append(' ')
 
-            await asyncio.sleep(2)
+            await asyncio.sleep(15)
             embed = discord.Embed(title=f'🔍 **{str(hints[0])}**')
             embed.set_author(name=f'Rodada {game_round}\n')
             embed.add_field(name='\u200b', value='**Resposta:** `' + ''.join(guessing_gaps) + '`')
@@ -127,38 +127,28 @@ class Hangman(commands.Cog):
                 embed.set_image(url=(pfp))
                 await channel.send(embed=embed)
 
-                qnt_players = 0
-                aux_player_score = []
-                if msg.author.id not in rank_list:
-                    qnt_players+=1
-                    aux_player_score.append(msg.author.id)
-                    aux_player_score.append(1)
+                if msg.author.id not in rank:
+                    rank[msg.author.id] = 1
                 else:
                     rank[msg.author.id] += 1
                 
-                
-
                 words_to_be_guessed.pop(0)
                 hints.pop(0)
-                await asyncio.sleep(5)
-                string_rank = ''
-
-                
                 rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
                 rank_list = list(rank.items())
-                await ctx.send(f'rank dict {rank}')
-                await ctx.send(f'rank list {rank_list}')
 
-                """
-                string_rank += f'🥇 **<@{str(player)}>**: {str(score)} pontos\n'
-                string_rank += f'🥈 **<@{str(player)}>**: {str(score)} pontos\n'
-                string_rank += f'🥉 **<@{str(player)}>**: {str(score)} pontos\n'
-            
-                string_rank += f'🔹 **<@{str(player)}>**: {str(score)} pontos\n'
-                """
-            
-                ranking=discord.Embed(title='**RANKING**', color=0xb9e85a)
-                ranking.add_field(name='\u200b', value='string_rank')
+                await asyncio.sleep(5)
+                medals = ['🥇', '🥈', '🥉']
+                string_rank = ''
+                for i in range(0, len(rank_list)):
+                    if i > 2:
+                        string_rank += f'🔹 <@{rank_list[i][0]}>: **{rank_list[i][1]}** pontos\n'
+                    else:
+                        string_rank += f'{medals[i]} <@{rank_list[i][0]}>: **{rank_list[i][1]}** pontos\n'
+                    
+                ranking=discord.Embed(title='**Classificação**', description=string_rank, color=0xb9e85a)
+                ranking.set_author(name=f'Rodada {game_round}')
+                ranking.set_footer(text='Nova rodada em 15 segundos', icon_url='https://i.imgur.com/ws4I8kJ.png')
                 await channel.send(embed=ranking)
 
             except asyncio.TimeoutError:
@@ -173,28 +163,20 @@ class Hangman(commands.Cog):
         
         rank = dict(sorted(rank.items(), key=lambda item: item[1], reverse=True))
         await asyncio.sleep(5)
-
-        podium = []
-        for i in range(0, len(rank.items())):
-            podium.append([str(list(rank)[i]), str(list(rank.values())[i])])
-            if i > 2:
-                break
         
         final_string = ''
 
-        if len(podium) == 1:
-            final_string += '🏆 **Maior pontuador:** ' + '<@' + ''.join(str(podium[0][0])) + '> (' + ''.join(str(podium[0][1]) + ' pontos)')
-        elif len(podium) == 2:
-            final_string += '🏆 **Maior pontuador:** ' + '<@' + ''.join(str(podium[0][0])) + '> (' + ''.join(str(podium[0][1]) + ' pontos)\n')
-            final_string += '🥈 **Segundo lugar:** ' + '<@' + ''.join(str(podium[1][0])) + '> (' + ''.join(str(podium[1][1]) + ' pontos)')
-        elif len(podium) == 3:
-            final_string += '🏆 **Maior pontuador:** ' + '<@' + ''.join(str(podium[0][0])) + '> (' + ''.join(str(podium[0][1]) + ' pontos)\n')
-            final_string += '🥈 **Segundo lugar:** ' + '<@' + ''.join(str(podium[1][0])) + '> (' + ''.join(str(podium[1][1]) + ' pontos)\n')
-            final_string += '🥉 **Terceiro lugar:** ' + '<@' + ''.join(str(podium[2][0])) + '> (' + ''.join(str(podium[2][1]) + ' pontos)')
+        medals = ['🏆', '🥈', '🥉']
+        places = ['Maior pontuador:', 'Segundo lugar:', 'Terceiro lugar:']
 
-        ranking=discord.Embed(title='**FIM DE JOGO!**\n\n', color=0xb9e85a)
-            
-        ranking.add_field(name='\u200b', value=final_string)
+        for i in range(0, len(rank_list)):
+            if i > 2:
+                break
+            final_string += f'{medals[i]} **{places[i]}** <@{rank_list[i][0]}> (**{rank_list[i][1]}** pontos)\n'
+
+        ranking=discord.Embed(title='**Classificação final**\n\n', description=final_string, color=0xb9e85a)
+        ranking.set_author(name='Fim de jogo!')
+        ranking.set_footer(text='Obrigado por participar!', icon_url='https://i.imgur.com/zJ8dnY6.png')
 
         await channel.send(embed=ranking)
 
