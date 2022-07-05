@@ -26,7 +26,7 @@ class Hangman(commands.Cog):
         food_string = await self.bot.wait_for('message', check=check_channel_and_host)
 
         if food_string.content == 'advpalavra parar':
-            await ctx.send('Bot finalizado')
+            await ctx.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
             return
 
         await ctx.send('Bot alimentado')
@@ -47,7 +47,7 @@ class Hangman(commands.Cog):
         start = await self.bot.wait_for('message', check=check_start)
 
         if start.content == 'advpalavra parar':
-            await channel.send('Jogo parado')
+            await ctx.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
             return
         
         embed = discord.Embed(title='**Um novo jogo está começando**', color=0x55acee)
@@ -119,6 +119,7 @@ class Hangman(commands.Cog):
                         msg = await self.bot.wait_for('message', check=check, timeout=20)
 
                 if msg.content == 'advpalavra parar':
+                    await ctx.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
                     break
                 
                 user = await self.bot.fetch_user(msg.author.id)
@@ -153,10 +154,8 @@ class Hangman(commands.Cog):
                 await channel.send(embed=ranking)
 
             except asyncio.TimeoutError:
-                embed = discord.Embed(title='Ninguém acertou...', color=0xff4f4f)
-                embed.add_field(name='\u200b', value=f'A palavra era **{words_to_be_guessed[0]}**')
+                embed = discord.Embed(title='Acabou o tempo!', description=f'A palavra era **{words_to_be_guessed[0]}**', color=0xff4f4f)
                 embed.set_image(url='https://i.imgur.com/uYc95q2.png')
-                embed.set_author(name='Acabou o tempo!')
                 embed.set_footer(text=f'Rodada {game_round} de {rounds}')
                 await channel.send(embed=embed)
                 words_to_be_guessed.pop(0)
