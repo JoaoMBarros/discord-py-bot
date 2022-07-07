@@ -10,16 +10,16 @@ class Hangman(commands.Cog):
     @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(name='advpalavra')
     async def hangman_game(self, ctx):
-        channel = self.bot.get_channel(716000401618370660)
+        channel = self.bot.get_channel(716290570833887262)
         await ctx.send('Alimente o bot')
 
         def check_channel_and_host(m):
-            if m.content == 'advpalavra parar':
+            if m.content == 'advpalavra parar' and m.author.id == ctx.message.author.id:
                 return True
             return m.channel == ctx.message.channel and m.author.id == ctx.message.author.id
         
         def check_start(m):
-            if m.content == 'advpalavra parar':
+            if m.content == 'advpalavra parar' and m.author.id == ctx.message.author.id:
                 return True
             return m.content == 'advpalavra começar'
 
@@ -47,7 +47,7 @@ class Hangman(commands.Cog):
         start = await self.bot.wait_for('message', check=check_start)
 
         if start.content == 'advpalavra parar':
-            await ctx.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
+            await channel.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
             return
         
         embed = discord.Embed(title='**Um novo jogo está começando**', color=0x55acee)
@@ -62,7 +62,7 @@ class Hangman(commands.Cog):
         while words_to_be_guessed:
             game_round += 1
             def check(m):
-                if m.content == 'advpalavra parar':
+                if m.content == 'advpalavra parar' and m.author.id == ctx.message.author.id:
                     return True
                 return str(unidecode(m.content)).casefold() == str(unidecode(words_to_be_guessed[0])).casefold()
 
@@ -119,7 +119,7 @@ class Hangman(commands.Cog):
                         msg = await self.bot.wait_for('message', check=check, timeout=20)
 
                 if msg.content == 'advpalavra parar':
-                    await ctx.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
+                    await channel.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
                     break
                 
                 user = await self.bot.fetch_user(msg.author.id)
