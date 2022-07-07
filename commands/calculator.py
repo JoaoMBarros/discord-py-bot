@@ -20,6 +20,7 @@ class Calculator(commands.Cog):
     async def sub(self, ctx):
         response = str(ctx.message.content[13:])
         list_response = response.split(' ')
+        
         try:
             list_response = [float(x) for x in list_response]
             sub_numbers = list_response[0] - sum(list_response[1:])
@@ -31,6 +32,7 @@ class Calculator(commands.Cog):
     async def mult(self, ctx):
         response = str(ctx.message.content[14:])
         list_response = response.split(' ')
+
         try:
             list_response = [float(x) for x in list_response]
             aux = list_response[0]

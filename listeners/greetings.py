@@ -49,9 +49,9 @@ class Listeners(commands.Cog):
 
 def time():
     current = datetime.now(pytz.timezone('America/Sao_Paulo'))
+    
     if current.hour == 12 and current.minute == 00 and current.second == 00:
         return 'meia_noite'
-
     if(current.hour > 4 and current.hour < 13):
         return 'manha'
     elif(current.hour > 12 and current.hour < 19):
