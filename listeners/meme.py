@@ -34,7 +34,7 @@ class Meme(commands.Cog):
         elif 'hg' in str(message.content).casefold():
             await message.channel.send('Hg só quando o Grêmio ganhar')
         
-        elif 'jow' in str(message.content).casefold():
+        elif 'jow' == str(message.content).casefold():
             await message.channel.send('https://cdn.discordapp.com/attachments/987500208407597116/995153757149077535/jow.png')
 
 def setup(bot):
