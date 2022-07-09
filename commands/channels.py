@@ -16,7 +16,6 @@ class Channels(commands.Cog):
     
     @commands.command(name = "ssreviewers")
     async def send_message_ssreviewers(self, ctx):
-        print(ctx.message.attachments[0].url)
         response = 'https://www.youtube.com/channel/UCqy7pIHxn_i9iF-j2PPw2sg'
         await ctx.send(response)
 
