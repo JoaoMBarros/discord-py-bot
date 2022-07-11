@@ -24,7 +24,7 @@ class Bingo(commands.Cog):
         
         #Creating and DM'ing each player their respective sequence of numbers
         for player in players:
-            cartela_random = random.sample(range(0, 10), 5)
+            cartela_random = random.sample(range(0, 20), 5)
             bingo_players[player] = cartela_random
             aux = await self.bot.fetch_user(player)
             await aux.send(cartela_random)
@@ -32,7 +32,7 @@ class Bingo(commands.Cog):
         def check(m):
             return m.content == 'BATI'
 
-        possible_numbers = list(range(0, 10))
+        possible_numbers = list(range(0, 50))
 
         while(True):
 
