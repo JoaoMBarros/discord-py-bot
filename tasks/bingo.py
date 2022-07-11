@@ -1,20 +1,72 @@
-# New minigame, bingo.
+from discord.ext import commands
+import random
+import asyncio
 
+class Bingo(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
 
-"""Initial idea:
+    @commands.command(name='bingo')
+    async def bingo(self, ctx):
+        starting_string = await ctx.send('Bingo começando')
+        players = set()
+        called_numbers = set()
+        bingo_players = {}
+        await starting_string.add_reaction('🍆')
+        await asyncio.sleep(5)
+        starting_string = await starting_string.channel.fetch_message(starting_string.id)
 
-- As pessoas vão participar clicando na reação que vai aparecer de bingo
+        #Getting players
+        for reaction in starting_string.reactions:
+            async for user in reaction.users():
+                if user.id != self.bot.user.id:
+                    players.add(user.id)
+        
+        #Creating and DM'ing each player their respective sequence of numbers
+        for player in players:
+            cartela_random = random.sample(range(0, 10), 5)
+            bingo_players[player] = cartela_random
+            aux = await self.bot.fetch_user(player)
+            await aux.send(cartela_random)
+            
+        def check(m):
+            return m.content == 'BATI'
 
-- Faz o bot gerar uma sequencia de números (sei lá, de 01 até 50, tem que ver nos bingos como que é esse intervalo) e envia no privado de quem reagiu em formato de cartela. Pode ser de texto mesmo, tlg, faz o bot criar algo assim:
+        possible_numbers = list(range(0, 10))
+
+        while(True):
+
+            await asyncio.sleep(2)
+            await ctx.send('Próxima bola')
+            await asyncio.sleep(2)
+            aux = await ctx.send(random.choice(possible_numbers))
+
+            possible_numbers.remove(int(aux.content))
+            called_numbers.add(int(aux.content))
+
+            try:
+                winner = await self.bot.wait_for('message', check=check, timeout=5)
+
+                await ctx.send('Bateu mesmo? Vou ver')
+
+                await asyncio.sleep(5)
+
+                value = bingo_players.get(winner.author.id)
+
+                if all(x in called_numbers for x in value):
+                    await ctx.send(f'<@{winner.author.id}> ganhou. Aí é foda')
+                    break
+                else:
+                    await ctx.send('Ganhou o caralho')
+
+            except asyncio.TimeoutError:
+                pass
+
+"""
 01    13    14
 25    30    35
 47    48    50
-
-- Cria uma sala só pra bingo e o bingo rolaria lá, com o bot fazendo o papel de um locutor/mc/apresentador n sei, tipo
-bola 13
-marque na sua cartela bola 13 (poderia ser imagem já feita tbm, amigo, já que não seriam pesadas)
-
-- Quando faltar tipo 2 ou 3 números pra terminar, ele começa a dizer que tem duas pessoas perto de vencer
-
-- Quando o vencedor ou os vencedores completarem o bingo, o bot avisa
 """
+
+def setup(bot):
+    bot.add_cog(Bingo(bot))
