@@ -27,7 +27,7 @@ class Bingo(commands.Cog):
             cartela_random = random.sample(range(0, 20), 5)
             bingo_players[player] = cartela_random
             aux = await self.bot.fetch_user(player)
-            await aux.send(cartela_random)
+            await aux.send(f'Sua cartela: {cartela_random}')
             
         def check(m):
             return m.content == 'BATI'
@@ -54,19 +54,13 @@ class Bingo(commands.Cog):
                 value = bingo_players.get(winner.author.id)
 
                 if all(x in called_numbers for x in value):
-                    await ctx.send(f'<@{winner.author.id}> ganhou. Aí é foda')
+                    await ctx.send(f'<@{winner.author.id}> bateu. Aí é foda')
                     break
                 else:
-                    await ctx.send('Ganhou o caralho')
+                    await ctx.send('Bateu o caralho')
 
             except asyncio.TimeoutError:
                 pass
-
-"""
-01    13    14
-25    30    35
-47    48    50
-"""
 
 def setup(bot):
     bot.add_cog(Bingo(bot))
