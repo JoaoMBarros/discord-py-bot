@@ -1,3 +1,5 @@
+#Working on a database for the bot
+
 from discord.ext import commands
 import random
 import asyncio
