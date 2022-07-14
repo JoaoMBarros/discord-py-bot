@@ -1,4 +1,5 @@
 #Working on a database for the bot
+#Images link storage
 
 from discord.ext import commands
 import random
