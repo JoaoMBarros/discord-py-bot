@@ -1,9 +1,8 @@
-#Working on a database for the bot
-#Images link storage
-
 from discord.ext import commands
 import random
 import asyncio
+import discord
+import mysql.connector
 
 class Bingo(commands.Cog):
     def __init__(self, bot):
@@ -11,6 +10,13 @@ class Bingo(commands.Cog):
 
     @commands.command(name='bingo')
     async def bingo(self, ctx):
+        database = connection()
+        cursor = database.cursor()
+
+        if not database:
+            print('Falha na conexao com o banco de dados')
+            exit(1)
+        
         starting_string = await ctx.send('Bingo começando')
         players = set()
         called_numbers = set()
@@ -33,37 +39,57 @@ class Bingo(commands.Cog):
             await aux.send(f'Sua cartela: {cartela_random}')
             
         def check(m):
-            return m.content == 'BATI'
+            return str(m.content).casefold() == 'bati'
 
-        possible_numbers = list(range(0, 50))
+        possible_numbers = list(range(1, 6))
 
         while(True):
 
-            await asyncio.sleep(2)
-            await ctx.send('Próxima bola')
-            await asyncio.sleep(2)
-            aux = await ctx.send(random.choice(possible_numbers))
+            aux = random.choice(possible_numbers)
+            possible_numbers.remove(aux)
+            called_numbers.add(aux)
 
-            possible_numbers.remove(int(aux.content))
-            called_numbers.add(int(aux.content))
+            cursor.execute(f'SELECT bingo_image_link FROM bingo_images WHERE id_image = {aux}')
+            get_image_link_from_db = cursor.fetchone()
+            
+            aux = await ctx.send(embed=discord.Embed(title='Rolando...', color=0x00FFFF))
+            await asyncio.sleep(3)
+            await aux.delete()
+            await ctx.send(get_image_link_from_db[0])
+            await ctx.send(embed=discord.Embed( title='Bolas sorteadas', 
+                                                description=' - '.join(f'{k}' for k in called_numbers), 
+                                                color=0x00FFFF) )
 
+           
             try:
                 winner = await self.bot.wait_for('message', check=check, timeout=5)
 
-                await ctx.send('Bateu mesmo? Vou ver')
+                await ctx.send(embed=discord.Embed(title=f'{winner.author.name} diz que bateu. Veremos...', color=0x00FFFF))
 
                 await asyncio.sleep(5)
 
                 value = bingo_players.get(winner.author.id)
 
                 if all(x in called_numbers for x in value):
-                    await ctx.send(f'<@{winner.author.id}> bateu. Aí é foda')
+                    await ctx.send(embed=discord.Embed(title=f'<@{winner.author.id}> bateu. Aí é foda', color=0x00FFFF))
                     break
                 else:
-                    await ctx.send('Bateu o caralho')
+                    await ctx.send(embed=discord.Embed(title='Bateu nada!', color=0x00FFFF))
+                    await asyncio.sleep(3)
 
             except asyncio.TimeoutError:
                 pass
 
 def setup(bot):
     bot.add_cog(Bingo(bot))
+
+def connection():
+    con = mysql.connector.connect(host='us-cdbr-east-06.cleardb.net', database='heroku_14d4793a8dd9a42', user='bc3c162b414dfa', password='ff17f6c2')
+    if con.is_connected():
+        return con
+    else:
+        return False
+
+def close_connection(con, cursor):
+    cursor.close()
+    con.close()

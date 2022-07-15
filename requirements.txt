@@ -7,3 +7,4 @@ translate
 unidecode
 pytz
 apscheduler
+mysql-connector-python
