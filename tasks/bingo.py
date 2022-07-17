@@ -3,7 +3,6 @@ import random
 import asyncio
 import discord
 import time
-import datetime
 import mysql.connector
 
 class Bingo(commands.Cog):
@@ -14,11 +13,9 @@ class Bingo(commands.Cog):
     async def bingo(self, ctx):
         database = connection()
         cursor = database.cursor()
-
         if not database:
             print('Falha na conexao com o banco de dados')
             exit(1)
-        
         starting_game_embed = discord.Embed(title='Um novo jogo está começando', color=0x55ACEE)
         starting_game_embed.set_footer(text='Reaja com ✋ para participar e receber sua cartela')
         starting_game_embed.set_author(name='Bingo da Senryuu')
@@ -93,11 +90,8 @@ class Bingo(commands.Cog):
             except asyncio.TimeoutError:
                 pass
 
-def setup(bot):
-    bot.add_cog(Bingo(bot))
-
 def connection():
-    con = mysql.connector.connect()
+    con = mysql.connector.connect(host='us-cdbr-east-06.cleardb.net', database='heroku_14d4793a8dd9a42', user='bc3c162b414dfa', password='ff17f6c2')
     if con.is_connected():
         return con
     else:
@@ -106,3 +100,6 @@ def connection():
 def close_connection(con, cursor):
     cursor.close()
     con.close()
+
+def setup(bot):
+    bot.add_cog(Bingo(bot))

@@ -8,7 +8,6 @@ class Calculator(commands.Cog):
     async def sum(self, ctx):
         response = str(ctx.message.content[14:])
         list_response = response.split(' ')
-        
         try:
             list_response = [float(x) for x in list_response]
             sum_numbers = lambda soma : sum(soma)
