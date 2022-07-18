@@ -8,3 +8,4 @@ unidecode
 pytz
 apscheduler
 mysql-connector-python
+repackage

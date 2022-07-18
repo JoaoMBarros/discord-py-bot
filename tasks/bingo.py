@@ -16,6 +16,7 @@ class Bingo(commands.Cog):
         if not database:
             print('Falha na conexao com o banco de dados')
             exit(1)
+            
         starting_game_embed = discord.Embed(title='Um novo jogo está começando', color=0x55ACEE)
         starting_game_embed.set_footer(text='Reaja com ✋ para participar e receber sua cartela')
         starting_game_embed.set_author(name='Bingo da Senryuu')

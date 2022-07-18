@@ -11,6 +11,7 @@ def load_cogs(bot):
     bot.load_extension('tasks.hangman')
     bot.load_extension('tasks.bingo')
     bot.load_extension('tasks.teste')
+    bot.load_extension('tasks.bet')
 
     for file in os.listdir("commands/"):
         if file.endswith(".py"):
