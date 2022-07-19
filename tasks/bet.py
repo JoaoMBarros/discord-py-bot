@@ -9,7 +9,7 @@ class Bet(commands.Cog):
     async def start_poll(self, ctx):
 
         #Breaking the string command and creating a list with all substrings
-        string_list = str(ctx.message.content)[17:]
+        string_list = str(ctx.message.content)[16:]
         string_list = string_list.split('^')
 
         await ctx.message.delete()
@@ -26,9 +26,6 @@ class Bet(commands.Cog):
             choosen_emotes.append(string_list.pop(0))
             poll_options.append(string_list.pop(0))
         
-        #Striping the space characters from the elements of the emotes list
-        choosen_emotes = [s.strip(' ') for s in choosen_emotes]
-
         #Creating the poll string        
         for i in range(0, len(poll_options), 1):
             poll_string += str(choosen_emotes[i]) + ' ➜ ' + str(poll_options[i]) + '\n'
@@ -38,9 +35,7 @@ class Bet(commands.Cog):
         winners = []
         poll_emotes_count = []
         
-        #Adding the reactions to it
-        for emote in choosen_emotes:
-            await poll_string.add_reaction(emote)
+        poll_string.add_reaction('✅')
         
         #Time until the poll ends
         await asyncio.sleep(time)
