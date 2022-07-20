@@ -10,7 +10,6 @@ class Bet(commands.Cog):
 
         #Breaking the string command and creating a list with all substrings
         string_list = str(ctx.message.content)[16:]
-        string_list = string_list.split('^')
 
         await ctx.message.delete()
 
@@ -18,17 +17,15 @@ class Bet(commands.Cog):
         time = int(string_list.pop(0))
 
         poll_options = []
-        choosen_emotes = []
         poll_string = ''
 
         #Grabbing the emotes and the poll options sent with the command
         while string_list:
-            choosen_emotes.append(string_list.pop(0))
             poll_options.append(string_list.pop(0))
         
         #Creating the poll string        
         for i in range(0, len(poll_options), 1):
-            poll_string += str(choosen_emotes[i]) + ' ➜ ' + str(poll_options[i]) + '\n'
+            poll_string += str(poll_options[i]) + '\n'
 
         poll_string = await ctx.send(poll_string)
 
