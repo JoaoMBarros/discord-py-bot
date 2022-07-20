@@ -12,7 +12,7 @@ class My_Database:
         
     #Connect to the database
     def connect():
-        con = mysql.connector.connect()
+        con = mysql.connector.connect(user='bc3c162b414dfa', password='ff17f6c2', host='us-cdbr-east-06.cleardb.net', database='heroku_14d4793a8dd9a42')
         if con.is_connected():
             CONNECTED = True
             return con
