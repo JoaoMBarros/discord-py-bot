@@ -36,6 +36,9 @@ class Meme(commands.Cog):
         
         elif 'jow' == str(message.content).casefold():
             await message.channel.send('https://cdn.discordapp.com/attachments/987500208407597116/995153757149077535/jow.png')
+        
+        elif 'e a japa luisa' == str(message.content).casefold():
+            await message.channel.send('ainda na luta')
 
 def setup(bot):
     bot.add_cog(Meme(bot))

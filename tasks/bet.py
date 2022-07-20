@@ -47,24 +47,10 @@ class Bet(commands.Cog):
         for i in poll_string.reactions:
             aux += 1
             if i.count == max(poll_emotes_count):
-                winner_emote = choosen_emotes[aux]
                 winners.append(poll_options[aux])
 
         winners = [s.strip(' ') for s in winners]
         winner_message = 'Empate entre **'
-
-        if len(winners) == 1:
-            winner_message = str(winner_emote) + ' ' + winners[0] + ' venceu.'
-        elif len(winners) == 2:
-            winner_message += str(winners[0]) + '** e **' + str(winners[1]) + '**.'
-        else:
-            for i in range(0, len(winners)):
-                if i < len(winners)-1:
-                    winner_message += winners[i] + '**, **'
-                else:
-                    winner_message = winner_message[:-6]
-                    winner_message += '** e **' + winners[-1] + '**.'
-        await ctx.send(winner_message)
         
 def setup(bot):
     bot.add_cog(Bet(bot))

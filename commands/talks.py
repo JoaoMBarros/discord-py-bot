@@ -24,7 +24,7 @@ class Talks(commands.Cog):
         options = options.split(' ou ')
         response = 'Na minha opinião, ' + random.choice(options) + '.'
         await ctx.send(response)
-
+    
     @commands.command(name='diga')
     async def send_message_yes_or_no(self, ctx):
         answers = ['Sim', 'Não', 'De forma alguma', 'Não sei', 'Com toda certeza']
