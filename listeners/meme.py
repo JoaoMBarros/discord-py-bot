@@ -39,6 +39,9 @@ class Meme(commands.Cog):
         
         elif 'e a japa luisa' == str(message.content).casefold():
             await message.channel.send('ainda na luta')
+        
+        elif 'sexo' in str(message.content).casefold():
+            await message.channel.send('<:sexo:993607518750261328>')
 
 def setup(bot):
     bot.add_cog(Meme(bot))
