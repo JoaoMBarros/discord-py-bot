@@ -94,6 +94,5 @@ class Reactions(commands.Cog):
         else:
             await ctx.channel.send("Não foi dessa vez")   
 
-
 def setup(bot):
     bot.add_cog(Reactions(bot))

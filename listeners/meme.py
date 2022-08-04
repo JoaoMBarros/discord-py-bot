@@ -11,10 +11,10 @@ class Meme(commands.Cog):
         if message.author == self.bot.user:
             return
 
-        if 'gremio' in str(unidecode(message.content)).casefold():
+        if 'gremio' == str(unidecode(message.content)).casefold():
             await message.channel.send('<:anime:749023956987805709>')
             
-        elif 'flamengo' in str(message.content).casefold():
+        elif 'flamengo' == str(message.content).casefold():
             await message.channel.send('silencio, deixem o mestre dorival trabalhar')
             
         elif 'maconha' in str(message.content).casefold():
@@ -31,7 +31,7 @@ class Meme(commands.Cog):
                 roulette = ['🤤', '😋', 'oi', 'opa', 'quero', 'cade', 'onde', 'maconha?']
                 await message.channel.send(random.choice(roulette))
             
-        elif 'hg' in str(message.content).casefold():
+        elif 'hg' == str(message.content).casefold():
             await message.channel.send('Hg só quando o Grêmio ganhar')
         
         elif 'jow' == str(message.content).casefold():

@@ -7,11 +7,9 @@ from apscheduler.triggers.cron import CronTrigger
 class Listeners(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
     @commands.Cog.listener()
     async def on_ready(self):
-        print('funcionando')
-        
-        #Trigger the send_midnight_message every day at 0:00:00
         scheduler = AsyncIOScheduler()
         scheduler.add_job(self.send_midnight_message, CronTrigger(hour='0', minute='00', second='00', timezone='America/Sao_Paulo'))
         scheduler.add_job(self.send_4_20_message, CronTrigger(hour='4', minute='20', second='00', timezone='America/Sao_Paulo'))
@@ -24,7 +22,7 @@ class Listeners(commands.Cog):
     
     async def send_4_20_message(self):
         c = self.bot.get_channel(988536738987266108)
-        await c.send('Mamãe dormiu, fumaça subiu')
+        await c.send('https://imgur.com/QT0CUqf')
     
     async def send_16_20_message(self):
         c = self.bot.get_channel(988536738987266108)
