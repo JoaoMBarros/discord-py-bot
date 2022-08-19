@@ -18,6 +18,20 @@ class Channels(commands.Cog):
     async def send_message_ssreviewers(self, ctx):
         response = 'https://www.youtube.com/channel/UCqy7pIHxn_i9iF-j2PPw2sg'
         await ctx.send(response)
+    
+    @commands.command(name='fecharcanal')
+    async def close_channel(self, ctx):
+        if ctx.message.author.id != 193296310525231114:
+            return
+            
+        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
+
+    @commands.command(name='abrircanal')
+    async def open_channel(self, ctx):
+        if ctx.message.author.id != 193296310525231114:
+            return
+
+        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
 
 def setup(bot):
     bot.add_cog(Channels(bot))
