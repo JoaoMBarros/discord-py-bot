@@ -1,5 +1,4 @@
 from discord.ext import commands
-import asyncio
 
 class Channels(commands.Cog):
     def __init__(self, bot):
