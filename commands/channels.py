@@ -1,4 +1,5 @@
 from discord.ext import commands
+import asyncio
 
 class Channels(commands.Cog):
     def __init__(self, bot):
@@ -25,7 +26,9 @@ class Channels(commands.Cog):
             return
             
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
-        await ctx.send('Chat fechado')
+        await ctx.message.delete()
+
+        await ctx.send('Chat fechado', delete_after=2.0)
 
     @commands.command(name='abrircanal')
     async def open_channel(self, ctx):
@@ -33,7 +36,10 @@ class Channels(commands.Cog):
             return
 
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-        await ctx.send('Chat abrido')
+        await ctx.message.delete()
+
+        await ctx.send('Chat abrido', delete_after=2.0)
+
 
 def setup(bot):
     bot.add_cog(Channels(bot))
