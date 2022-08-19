@@ -25,6 +25,7 @@ class Channels(commands.Cog):
             return
             
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
+        await ctx.send('Chat fechado')
 
     @commands.command(name='abrircanal')
     async def open_channel(self, ctx):
@@ -32,6 +33,7 @@ class Channels(commands.Cog):
             return
 
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
+        await ctx.send('Chat abrido')
 
 def setup(bot):
     bot.add_cog(Channels(bot))
