@@ -71,5 +71,5 @@ def get_output_jokenpo(first_user, second_user):
 
     return winner + ' ganhou'    
 
-def setup(bot):
-    bot.add_cog(Jokenpo(bot))
+async def setup(bot):
+    await bot.add_cog(Jokenpo(bot))

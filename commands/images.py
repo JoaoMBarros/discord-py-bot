@@ -10,5 +10,5 @@ class Images(commands.Cog):
         await ctx.message.delete()
         await ctx.send(image)
 
-def setup(bot):
-    bot.add_cog(Images(bot))
+async def setup(bot):
+    await bot.add_cog(Images(bot))

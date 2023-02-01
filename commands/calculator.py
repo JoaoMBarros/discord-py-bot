@@ -55,5 +55,5 @@ class Calculator(commands.Cog):
         except ValueError:
             await ctx.send('Tem que ser só número meu filho')
 
-def setup(bot):
-    bot.add_cog(Calculator(bot))
+async def setup(bot):
+    await bot.add_cog(Calculator(bot))

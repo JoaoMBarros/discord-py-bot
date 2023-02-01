@@ -65,5 +65,5 @@ def time():
         return 'tarde'
     return 'noite'
 
-def setup(bot):
-    bot.add_cog(Listeners(bot))
+async def setup(bot):
+    await bot.add_cog(Listeners(bot))

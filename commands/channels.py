@@ -40,5 +40,5 @@ class Channels(commands.Cog):
         await ctx.send('Chat abrido', delete_after=2.0)
 
 
-def setup(bot):
-    bot.add_cog(Channels(bot))
+async def setup(bot):
+    await bot.add_cog(Channels(bot))

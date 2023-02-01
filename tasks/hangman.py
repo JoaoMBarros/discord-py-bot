@@ -121,9 +121,10 @@ class Hangman(commands.Cog):
                 if msg.content == 'advpalavra parar':
                     await channel.send(embed=discord.Embed(title='Jogo finalizado', color=0xffffff))
                     break
-                
+
                 user = await self.bot.fetch_user(msg.author.id)
-                pfp = user.avatar_url_as(size=128)                              
+                pfp = user.avatar
+                pfp = pfp.with_size(128) if pfp != None else 'https://cdn.discordapp.com/attachments/658011360625688587/1069255545355239495/images152.jpg'  
                 embed=discord.Embed(title=f'**{msg.author.name} acertou!**', description=f'A palavra era **{words_to_be_guessed[0]}**', color=0xc5ee55)
                 embed.set_image(url=(pfp))
                 embed.set_footer(text=f'Rodada {game_round} de {rounds}')
@@ -193,5 +194,5 @@ class Hangman(commands.Cog):
         await asyncio.sleep(5)
         await channel.send(embed=ranking)
 
-def setup(bot):
-    bot.add_cog(Hangman(bot))
+async def setup(bot):
+    await bot.add_cog(Hangman(bot))
